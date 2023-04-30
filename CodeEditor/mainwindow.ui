@@ -48,7 +48,6 @@
     <addaction name="save_file"/>
     <addaction name="save_as"/>
     <addaction name="separator"/>
-    <addaction name="print"/>
     <addaction name="exit"/>
    </widget>
    <widget class="QMenu" name="menubianji">
@@ -278,9 +277,6 @@
    </property>
   </action>
   <action name="font">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/images/font.png</normaloff>:/images/font.png</iconset>
@@ -338,18 +334,6 @@
    </property>
    <property name="shortcut">
     <string>Shift+Esc</string>
-   </property>
-  </action>
-  <action name="print">
-   <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/print.png</normaloff>:/images/print.png</iconset>
-   </property>
-   <property name="text">
-    <string>打印</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

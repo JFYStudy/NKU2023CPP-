@@ -26,7 +26,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_MainWindow_t {
-    uint offsetsAndSizes[38];
+    uint offsetsAndSizes[36];
     char stringdata0[11];
     char stringdata1[22];
     char stringdata2[1];
@@ -41,11 +41,10 @@ struct qt_meta_stringdata_MainWindow_t {
     char stringdata11[18];
     char stringdata12[18];
     char stringdata13[18];
-    char stringdata14[19];
-    char stringdata15[20];
-    char stringdata16[8];
-    char stringdata17[21];
-    char stringdata18[23];
+    char stringdata14[20];
+    char stringdata15[8];
+    char stringdata16[21];
+    char stringdata17[23];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_MainWindow_t::offsetsAndSizes) + ofs), len 
@@ -65,11 +64,10 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
         QT_MOC_LITERAL(192, 17),  // "on_undo_triggered"
         QT_MOC_LITERAL(210, 17),  // "on_redo_triggered"
         QT_MOC_LITERAL(228, 17),  // "on_exit_triggered"
-        QT_MOC_LITERAL(246, 18),  // "on_print_triggered"
-        QT_MOC_LITERAL(265, 19),  // "on_bolder_triggered"
-        QT_MOC_LITERAL(285, 7),  // "checked"
-        QT_MOC_LITERAL(293, 20),  // "on_italics_triggered"
-        QT_MOC_LITERAL(314, 22)   // "on_underline_triggered"
+        QT_MOC_LITERAL(246, 19),  // "on_bolder_triggered"
+        QT_MOC_LITERAL(266, 7),  // "checked"
+        QT_MOC_LITERAL(274, 20),  // "on_italics_triggered"
+        QT_MOC_LITERAL(295, 22)   // "on_underline_triggered"
     },
     "MainWindow",
     "on_new_file_triggered",
@@ -85,7 +83,6 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
     "on_undo_triggered",
     "on_redo_triggered",
     "on_exit_triggered",
-    "on_print_triggered",
     "on_bolder_triggered",
     "checked",
     "on_italics_triggered",
@@ -100,7 +97,7 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -108,22 +105,21 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  110,    2, 0x08,    1 /* Private */,
-       3,    0,  111,    2, 0x08,    2 /* Private */,
-       4,    0,  112,    2, 0x08,    3 /* Private */,
-       5,    0,  113,    2, 0x08,    4 /* Private */,
-       6,    0,  114,    2, 0x08,    5 /* Private */,
-       7,    0,  115,    2, 0x08,    6 /* Private */,
-       8,    0,  116,    2, 0x08,    7 /* Private */,
-       9,    0,  117,    2, 0x08,    8 /* Private */,
-      10,    0,  118,    2, 0x08,    9 /* Private */,
-      11,    0,  119,    2, 0x08,   10 /* Private */,
-      12,    0,  120,    2, 0x08,   11 /* Private */,
-      13,    0,  121,    2, 0x08,   12 /* Private */,
-      14,    0,  122,    2, 0x08,   13 /* Private */,
-      15,    1,  123,    2, 0x08,   14 /* Private */,
-      17,    1,  126,    2, 0x08,   16 /* Private */,
-      18,    1,  129,    2, 0x08,   18 /* Private */,
+       1,    0,  104,    2, 0x08,    1 /* Private */,
+       3,    0,  105,    2, 0x08,    2 /* Private */,
+       4,    0,  106,    2, 0x08,    3 /* Private */,
+       5,    0,  107,    2, 0x08,    4 /* Private */,
+       6,    0,  108,    2, 0x08,    5 /* Private */,
+       7,    0,  109,    2, 0x08,    6 /* Private */,
+       8,    0,  110,    2, 0x08,    7 /* Private */,
+       9,    0,  111,    2, 0x08,    8 /* Private */,
+      10,    0,  112,    2, 0x08,    9 /* Private */,
+      11,    0,  113,    2, 0x08,   10 /* Private */,
+      12,    0,  114,    2, 0x08,   11 /* Private */,
+      13,    0,  115,    2, 0x08,   12 /* Private */,
+      14,    1,  116,    2, 0x08,   13 /* Private */,
+      16,    1,  119,    2, 0x08,   15 /* Private */,
+      17,    1,  122,    2, 0x08,   17 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -138,10 +134,9 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::Bool,   16,
-    QMetaType::Void, QMetaType::Bool,   16,
-    QMetaType::Void, QMetaType::Bool,   16,
+    QMetaType::Void, QMetaType::Bool,   15,
+    QMetaType::Void, QMetaType::Bool,   15,
+    QMetaType::Void, QMetaType::Bool,   15,
 
        0        // eod
 };
@@ -179,8 +174,6 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_exit_triggered'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_print_triggered'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_bolder_triggered'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<bool, std::false_type>,
@@ -212,10 +205,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 9: _t->on_undo_triggered(); break;
         case 10: _t->on_redo_triggered(); break;
         case 11: _t->on_exit_triggered(); break;
-        case 12: _t->on_print_triggered(); break;
-        case 13: _t->on_bolder_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
-        case 14: _t->on_italics_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
-        case 15: _t->on_underline_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
+        case 12: _t->on_bolder_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
+        case 13: _t->on_italics_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
+        case 14: _t->on_underline_triggered((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1]))); break;
         default: ;
         }
     }
@@ -240,13 +232,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 16)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 16;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 16)
+        if (_id < 15)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 16;
+        _id -= 15;
     }
     return _id;
 }

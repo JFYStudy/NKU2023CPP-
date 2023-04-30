@@ -41,7 +41,6 @@ public:
     QAction *redo;
     QAction *about;
     QAction *exit;
-    QAction *print;
     QWidget *centralwidget;
     QTextEdit *textEdit;
     QMenuBar *menubar;
@@ -118,7 +117,6 @@ public:
         underline->setIcon(icon10);
         font = new QAction(MainWindow);
         font->setObjectName("font");
-        font->setCheckable(true);
         QIcon icon11;
         icon11.addFile(QString::fromUtf8(":/images/font.png"), QSize(), QIcon::Normal, QIcon::Off);
         font->setIcon(icon11);
@@ -142,11 +140,6 @@ public:
         QIcon icon15;
         icon15.addFile(QString::fromUtf8(":/images/exit.png"), QSize(), QIcon::Normal, QIcon::Off);
         exit->setIcon(icon15);
-        print = new QAction(MainWindow);
-        print->setObjectName("print");
-        QIcon icon16;
-        icon16.addFile(QString::fromUtf8(":/images/print.png"), QSize(), QIcon::Normal, QIcon::Off);
-        print->setIcon(icon16);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         textEdit = new QTextEdit(centralwidget);
@@ -192,7 +185,6 @@ public:
         menu->addAction(save_file);
         menu->addAction(save_as);
         menu->addSeparator();
-        menu->addAction(print);
         menu->addAction(exit);
         menubianji->addAction(copy);
         menubianji->addAction(paste);
@@ -286,10 +278,6 @@ public:
         exit->setText(QCoreApplication::translate("MainWindow", "\351\200\200\345\207\272", nullptr));
 #if QT_CONFIG(shortcut)
         exit->setShortcut(QCoreApplication::translate("MainWindow", "Shift+Esc", nullptr));
-#endif // QT_CONFIG(shortcut)
-        print->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\215\260", nullptr));
-#if QT_CONFIG(shortcut)
-        print->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+P", nullptr));
 #endif // QT_CONFIG(shortcut)
         menu->setTitle(QCoreApplication::translate("MainWindow", "\346\226\207\344\273\266", nullptr));
         menubianji->setTitle(QCoreApplication::translate("MainWindow", "\347\274\226\350\276\221", nullptr));

@@ -40,8 +40,6 @@ private slots:
 
     void on_exit_triggered();
 
-    void on_print_triggered();
-
     void on_bolder_triggered(bool checked);
 
     void on_italics_triggered(bool checked);

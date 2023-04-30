@@ -214,6 +214,7 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 		../../../../Qt/6.4.3/mingw_64/mkspecs/features/yacc.prf \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/features/lex.prf \
 		../CodeEditor/CodeEditor.pro \
+		../../../../Qt/6.4.3/mingw_64/lib/Qt6PrintSupport.prl \
 		../../../../Qt/6.4.3/mingw_64/lib/Qt6Widgets.prl \
 		../../../../Qt/6.4.3/mingw_64/lib/Qt6Gui.prl \
 		../../../../Qt/6.4.3/mingw_64/lib/Qt6Core.prl \
@@ -365,6 +366,7 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 ../../../../Qt/6.4.3/mingw_64/mkspecs/features/yacc.prf:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/features/lex.prf:
 ../CodeEditor/CodeEditor.pro:
+../../../../Qt/6.4.3/mingw_64/lib/Qt6PrintSupport.prl:
 ../../../../Qt/6.4.3/mingw_64/lib/Qt6Widgets.prl:
 ../../../../Qt/6.4.3/mingw_64/lib/Qt6Gui.prl:
 ../../../../Qt/6.4.3/mingw_64/lib/Qt6Core.prl:

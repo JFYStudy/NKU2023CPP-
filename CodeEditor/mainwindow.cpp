@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
+#include <QFontDialog>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -22,7 +23,6 @@ void MainWindow::on_new_file_triggered()
     currentFile.clear();
     ui->textEdit->setText("");
 }
-
 
 void MainWindow::on_save_file_triggered()
 {
@@ -48,7 +48,6 @@ void MainWindow::on_save_file_triggered()
     file.close();
 }
 
-
 void MainWindow::on_open_file_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,"open file");
@@ -66,7 +65,6 @@ void MainWindow::on_open_file_triggered()
     file.close();
 }
 
-
 void MainWindow::on_save_as_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,"另存为");
@@ -82,7 +80,6 @@ void MainWindow::on_save_as_triggered()
     out<<text;
     file.close();
 }
-
 
 void MainWindow::on_paste_triggered()
 {
@@ -101,37 +98,25 @@ void MainWindow::on_cut_triggered()
 
 void MainWindow::on_about_triggered()
 {
-
+    QMessageBox::about(this,"Welcome to MKeditor","This is a markdown editor based on qt, welcome!");
 }
-
+//字体
 void MainWindow::on_font_triggered()
 {
-
+    bool fontSleceted;
+    QFont font = QFontDialog::getFont(&fontSleceted,this);
+    if(fontSleceted)
+    {
+        ui->textEdit->setFont(font);
+    }
 }
 
 
 void MainWindow::on_undo_triggered()
 {
-
+    ui->textEdit->undo();
 }
 
-
-void MainWindow::on_redo_triggered()
-{
-
-}
-
-
-void MainWindow::on_exit_triggered()
-{
-
-}
-
-
-void MainWindow::on_print_triggered()
-{
-
-}
 //加粗
 void MainWindow::on_bolder_triggered(bool checked)
 {
@@ -147,4 +132,14 @@ void MainWindow::on_underline_triggered(bool checked)
 {
     ui->textEdit->setFontUnderline(checked);
 }
+void MainWindow::on_redo_triggered()
+{
+    ui->textEdit->redo();
+}
+
+void MainWindow::on_exit_triggered()
+{
+    QCoreApplication::exit();
+}
+
 
