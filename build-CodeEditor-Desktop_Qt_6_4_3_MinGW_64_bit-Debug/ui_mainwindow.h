@@ -17,6 +17,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -41,10 +42,14 @@ public:
     QAction *redo;
     QAction *about;
     QAction *exit;
+    QAction *clear_history;
+    QAction *print;
     QWidget *centralwidget;
     QTextEdit *textEdit;
+    QTabWidget *tabWidget;
     QMenuBar *menubar;
     QMenu *menu;
+    QMenu *menu_3;
     QMenu *menubianji;
     QMenu *menu_2;
     QStatusBar *statusbar;
@@ -140,17 +145,30 @@ public:
         QIcon icon15;
         icon15.addFile(QString::fromUtf8(":/images/exit.png"), QSize(), QIcon::Normal, QIcon::Off);
         exit->setIcon(icon15);
+        clear_history = new QAction(MainWindow);
+        clear_history->setObjectName("clear_history");
+        print = new QAction(MainWindow);
+        print->setObjectName("print");
+        QIcon icon16;
+        icon16.addFile(QString::fromUtf8(":/images/print.png"), QSize(), QIcon::Normal, QIcon::Off);
+        print->setIcon(icon16);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         textEdit = new QTextEdit(centralwidget);
         textEdit->setObjectName("textEdit");
-        textEdit->setGeometry(QRect(13, -7, 701, 341));
+        textEdit->setGeometry(QRect(500, 50, 131, 111));
+        tabWidget = new QTabWidget(centralwidget);
+        tabWidget->setObjectName("tabWidget");
+        tabWidget->setGeometry(QRect(10, 20, 331, 181));
+        tabWidget->setTabShape(QTabWidget::Triangular);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 17));
         menu = new QMenu(menubar);
         menu->setObjectName("menu");
+        menu_3 = new QMenu(menu);
+        menu_3->setObjectName("menu_3");
         menubianji = new QMenu(menubar);
         menubianji->setObjectName("menubianji");
         menu_2 = new QMenu(menubar);
@@ -181,11 +199,13 @@ public:
         menubar->addAction(menu_2->menuAction());
         menu->addAction(new_file);
         menu->addAction(open_file);
+        menu->addAction(menu_3->menuAction());
         menu->addSeparator();
         menu->addAction(save_file);
         menu->addAction(save_as);
         menu->addSeparator();
         menu->addAction(exit);
+        menu_3->addAction(clear_history);
         menubianji->addAction(copy);
         menubianji->addAction(paste);
         menubianji->addAction(cut);
@@ -199,6 +219,7 @@ public:
         toolBar->addAction(open_file);
         toolBar->addAction(save_file);
         toolBar->addAction(save_as);
+        toolBar->addAction(print);
         toolBar_2->addAction(copy);
         toolBar_2->addAction(paste);
         toolBar_2->addAction(cut);
@@ -212,6 +233,9 @@ public:
         toolBar_5->addAction(exit);
 
         retranslateUi(MainWindow);
+
+        tabWidget->setCurrentIndex(-1);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -261,7 +285,7 @@ public:
 #endif // QT_CONFIG(shortcut)
         font->setText(QCoreApplication::translate("MainWindow", "\345\255\227\344\275\223", nullptr));
 #if QT_CONFIG(shortcut)
-        font->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+Shift+F", nullptr));
+        font->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+Alt+F", nullptr));
 #endif // QT_CONFIG(shortcut)
         undo->setText(QCoreApplication::translate("MainWindow", "\346\222\244\351\224\200", nullptr));
 #if QT_CONFIG(shortcut)
@@ -279,7 +303,13 @@ public:
 #if QT_CONFIG(shortcut)
         exit->setShortcut(QCoreApplication::translate("MainWindow", "Shift+Esc", nullptr));
 #endif // QT_CONFIG(shortcut)
+        clear_history->setText(QCoreApplication::translate("MainWindow", "\346\270\205\351\231\244\345\216\206\345\217\262", nullptr));
+        print->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\215\260", nullptr));
+#if QT_CONFIG(shortcut)
+        print->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+P", nullptr));
+#endif // QT_CONFIG(shortcut)
         menu->setTitle(QCoreApplication::translate("MainWindow", "\346\226\207\344\273\266", nullptr));
+        menu_3->setTitle(QCoreApplication::translate("MainWindow", "\346\234\200\350\277\221\346\211\223\345\274\200", nullptr));
         menubianji->setTitle(QCoreApplication::translate("MainWindow", "\347\274\226\350\276\221", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216", nullptr));
         toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));

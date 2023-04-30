@@ -4,24 +4,76 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <QFontDialog>
+#include <QSettings>
+
+
+#if defined(QT_PRINTSUPPORT_LIB)
+#include <QtPrintSupport/qtprintsupportglobal.h>
+#if QT_CONFIG(printer)
+#if QT_CONFIG(printdialog)
+#include <QPrintDialog>
+#endif
+#include <MyTextEditor.h>
+#include <QPrinter>
+#endif
+#endif
+
+QSettings * mSettings;
+QList<QString> getHistory();
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setCentralWidget(ui->textEdit);
+    this->setCentralWidget(ui->tabWidget);
+    if(mSettings==NULL)
+    {
+        mSettings = new QSettings("setting.ini",QSettings::IniFormat);
+
+    }
+    getHistory();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+//保存并且打开历史记录
+void saveHistory(QString path)
+{
+    //获取数组的长度
+    int size = mSettings->beginReadArray("history");
+    mSettings->endArray();//
+    //打开写入
+    mSettings->beginWriteArray("history");
+    mSettings->setArrayIndex(size+1);
+    //保存
+    mSettings->setValue("path",path);
+    //关闭
+    mSettings->endArray();
+}
+//获取历史记录
+QList<QString> getHistory()
+{
+    int size = mSettings->beginReadArray("history");
+    QList<QString> lists;
+    for (int i = 0; i < size; i++)
+    {
+        mSettings->setArrayIndex(i);
+        QString path = mSettings->value("path").toString();
+        lists.append(path);
+    }
 
+    mSettings->endArray();
+    return lists;
+}
 void MainWindow::on_new_file_triggered()
 {
-    qDebug()<<"Start Create New File ...";
-    currentFile.clear();
-    ui->textEdit->setText("");
+    MyTextEditor * mytexteditor = new MyTextEditor(this);
+    ui->tabWidget->addTab(mytexteditor,"New tab");
+//    qDebug()<<"Start Create New File ...";
+//    currentFile.clear();
+//    ui->textEdit->setText("");
 }
 
 void MainWindow::on_save_file_triggered()
@@ -63,6 +115,7 @@ void MainWindow::on_open_file_triggered()
     QString text = in.readAll();
     ui->textEdit->setText(text);
     file.close();
+    saveHistory(currentFile);
 }
 
 void MainWindow::on_save_as_triggered()
@@ -111,12 +164,10 @@ void MainWindow::on_font_triggered()
     }
 }
 
-
 void MainWindow::on_undo_triggered()
 {
     ui->textEdit->undo();
 }
-
 //加粗
 void MainWindow::on_bolder_triggered(bool checked)
 {
@@ -132,6 +183,7 @@ void MainWindow::on_underline_triggered(bool checked)
 {
     ui->textEdit->setFontUnderline(checked);
 }
+
 void MainWindow::on_redo_triggered()
 {
     ui->textEdit->redo();
@@ -142,4 +194,24 @@ void MainWindow::on_exit_triggered()
     QCoreApplication::exit();
 }
 
+
+
+void MainWindow::on_clear_history_triggered()
+{
+
+}
+
+
+void MainWindow::on_print_triggered()
+{
+#if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
+    QPrinter printDev;
+#if QT_CONFIG(printdialog)
+    QPrintDialog dialog(&printDev,this);
+    if(dialog.exec()==QDialog::Rejected)
+        return;
+#endif
+    ui->textEdit->print(&printDev);
+#endif
+}
 

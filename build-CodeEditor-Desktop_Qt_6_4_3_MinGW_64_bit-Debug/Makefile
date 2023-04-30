@@ -124,6 +124,10 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_openglwidgets_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_png_private.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioning.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioning_private.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioningquick.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioningquick_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_printsupport.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_printsupport_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_qml.pri \
@@ -179,6 +183,8 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uiplugin.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uitools.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uitools_private.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_webchannel.pri \
+		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_webchannel_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_widgets.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_widgets_private.pri \
 		../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_xml.pri \
@@ -276,6 +282,10 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_openglwidgets_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_packetprotocol_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_png_private.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioning.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioning_private.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioningquick.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_positioningquick_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_printsupport.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_printsupport_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_qml.pri:
@@ -331,6 +341,8 @@ Makefile: ../CodeEditor/CodeEditor.pro ../../../../Qt/6.4.3/mingw_64/mkspecs/win
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uiplugin.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uitools.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_uitools_private.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_webchannel.pri:
+../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_webchannel_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_widgets.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_widgets_private.pri:
 ../../../../Qt/6.4.3/mingw_64/mkspecs/modules/qt_lib_xml.pri:

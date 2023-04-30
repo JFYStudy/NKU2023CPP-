@@ -46,6 +46,10 @@ private slots:
 
     void on_underline_triggered(bool checked);
 
+    void on_clear_history_triggered();
+
+    void on_print_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString currentFile;
