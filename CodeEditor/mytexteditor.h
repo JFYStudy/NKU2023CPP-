@@ -18,10 +18,13 @@ private slots:
     void textEditScrollBarChanged();
     void ScrollBarChanged();
     void onTextChange();
+    void textEditVScrollBarChanged();
+    void ScrollBrowserVscrollBarChanged();
 private:
     Ui::MyTextEditor *ui;
     void initConnect();
     void initFont();
+    void initHigglighter();
 };
 
 #endif // MYTEXTEDITOR_H
