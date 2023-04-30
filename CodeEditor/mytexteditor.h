@@ -17,6 +17,7 @@ public:
 private slots:
     void textEditScrollBarChanged();
     void ScrollBarChanged();
+    void onTextChange();
 private:
     Ui::MyTextEditor *ui;
     void initConnect();

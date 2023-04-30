@@ -19,13 +19,14 @@ MyTextEditor::~MyTextEditor()
 
 void MyTextEditor::initConnect()
 {
+    connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(onTextChange()));
     connect(ui->textEdit->horizontalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(textEditScrollBarChanged()));
     connect(ui->horizontalScrollBar,SIGNAL(valueChanged(int)),this,SLOT(ScrollBarChanged()));
 }
 
 void MyTextEditor::initFont()
 {
-    QFont font("Consolas",14);
+    QFont font("Source Code Pro",14);
     ui->textEdit->setFont(font);
     ui->textBrowser->setFont(font);
 }
@@ -41,6 +42,18 @@ void MyTextEditor::textEditScrollBarChanged()
 void MyTextEditor::ScrollBarChanged()
 {
     ui->textEdit->horizontalScrollBar()->setValue(ui->horizontalScrollBar->value());
+}
+
+void MyTextEditor::onTextChange()
+{
+    int linecount = ui->textEdit->document()->lineCount();
+    QString text = "";
+    for (int i = 0; i < linecount; i++)
+    {
+        text += QString::number(i+1)+"\n";
+    }
+    ui->textBrowser->setMaximumWidth(25+QString::number(linecount).length()*5);
+    ui->textBrowser->setText(text);
 }
 
 
