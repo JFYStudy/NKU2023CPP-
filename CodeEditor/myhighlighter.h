@@ -20,6 +20,8 @@ private:
 
     QVector<HighlightRule> highlightRules;
     void addNormalTextFormat();
+    void addNumberFormat();
+    void addStringFormat();
 };
 
 #endif // MYHIGHLIGHTER_H
