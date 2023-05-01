@@ -13,6 +13,7 @@
 #if QT_CONFIG(printdialog)
 #include <QPrintDialog>
 #endif
+#include <MyTextEditByCode.h>
 #include <MyTextEditor.h>
 #include <QPrinter>
 #endif
@@ -69,8 +70,9 @@ QList<QString> getHistory()
 }
 void MainWindow::on_new_file_triggered()
 {
-    MyTextEditor * mytexteditor = new MyTextEditor(this);
-    ui->tabWidget->addTab(mytexteditor,"New tab");
+//    MyTextEditor * mytexteditor = new MyTextEditor(this);
+//    ui->tabWidget->addTab(mytexteditor,"New tab");
+    ui->tabWidget->addTab(new MyTextEditByCode(this),"New tab");
 //    qDebug()<<"Start Create New File ...";
 //    currentFile.clear();
 //    ui->textEdit->setText("");
