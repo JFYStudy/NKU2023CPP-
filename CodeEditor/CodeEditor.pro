@@ -12,12 +12,14 @@ qtHaveModule(printsupport): QT+=printsupport
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mycodeeditor.cpp \
     myhighlighter.cpp \
     mytexteditbycode.cpp \
     mytexteditor.cpp
 
 HEADERS += \
     mainwindow.h \
+    mycodeeditor.h \
     myhighlighter.h \
     mytexteditbycode.h \
     mytexteditor.h

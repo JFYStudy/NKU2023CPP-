@@ -20,11 +20,13 @@ private slots:
     void onTextChange();
     void textEditVScrollBarChanged();
     void ScrollBrowserVscrollBarChanged();
+    void highlightCurrentLine();
 private:
     Ui::MyTextEditor *ui;
     void initConnect();
     void initFont();
     void initHigglighter();
+    QFont mFont;
 };
 
 #endif // MYTEXTEDITOR_H

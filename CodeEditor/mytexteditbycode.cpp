@@ -19,6 +19,16 @@ MyTextEditByCode::MyTextEditByCode(QWidget *parent)
 
     //高亮
     initHighlight();
+
+    //行高亮
+    highlightCurrentLine();
+}
+
+MyTextEditByCode::~MyTextEditByCode()
+{
+    delete textEdit;
+    delete textBrowser;
+    delete scrollBar;
 }
 
 void MyTextEditByCode::initWidget()
@@ -70,17 +80,36 @@ void MyTextEditByCode::initFont()
 
 void MyTextEditByCode::initConnection()
 {
+    //textChange
     connect(textEdit->horizontalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onTextEditHorizontalScrollBarChanged()));
+    //滚动条
     connect(textEdit->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onTextEditVerticalScrollBarChanged()));
     connect(scrollBar,SIGNAL(valueChanged(int)),this,SLOT(onScrollBarChanged()));
     connect(textBrowser->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onTextBrowserHorizontalScrollBarChanged()));
     connect(textEdit,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
+    //cursor
+    connect(textEdit,SIGNAL(cursorPositionChanged()),this,SLOT(highlightCurrentLine()));
 
 }
 
 void MyTextEditByCode::initHighlight()
 {
     new MyHighLighter(textEdit->document());
+}
+
+void MyTextEditByCode::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    QTextEdit::ExtraSelection selection;
+    selection.format.setBackground(QColor(0,100,100,20));
+    selection.format.setProperty(QTextFormat::FullWidthSelection,true);
+    selection.cursor=textEdit->textCursor();
+
+    extraSelections.append(selection);
+
+    textEdit->setExtraSelections(extraSelections);
+
 }
 void MyTextEditByCode::onTextEditHorizontalScrollBarChanged()
 {

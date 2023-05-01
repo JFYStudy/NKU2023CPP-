@@ -13,6 +13,8 @@ MyTextEditor::MyTextEditor(QWidget *parent) :
     initFont();
     //初始化高亮
     initHigglighter();
+    //当前行高亮
+    highlightCurrentLine();
 }
 
 MyTextEditor::~MyTextEditor()
@@ -28,13 +30,35 @@ void MyTextEditor::initConnect()
 
     connect(ui->textEdit->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(textEditVScrollBarChanged()));
     connect(ui->textBrowser->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(ScrollBrowserVscrollBarChanged()));
+
+    connect(ui->textEdit,SIGNAL(cursorPositionChanged()),this,SLOT(highlightCurrentLine()));
 }
 
+void MyTextEditor::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    QTextEdit::ExtraSelection selection;
+    selection.format.setBackground(QColor(0,100,100,20));
+    selection.format.setProperty(QTextFormat::FullWidthSelection,true);
+    selection.cursor=ui->textEdit->textCursor();
+
+    extraSelections.append(selection);
+
+    ui->textEdit->setExtraSelections(extraSelections);
+
+}
 void MyTextEditor::initFont()
 {
-    QFont font("Consolas",14);
-    ui->textEdit->setFont(font);
-    ui->textBrowser->setFont(font);
+    mFont = QFont("Consolas",14);
+    ui->textEdit->setFont(mFont);
+
+    QTextBlockFormat format;
+    format.setLineHeight(QFontMetrics(mFont).height()*1.1,QTextBlockFormat::FixedHeight);
+    QTextCursor cursor = ui->textEdit->textCursor();
+    cursor.select(QTextCursor::Document);
+    cursor.mergeBlockFormat(format);
+    ui->textBrowser->setFont(mFont);
 }
 
 void MyTextEditor::initHigglighter()
@@ -80,6 +104,13 @@ void MyTextEditor::onTextChange()
 
     ui->textBrowser->setMaximumWidth(25+QString::number(linecount).length()*10);
     ui->textBrowser->setText(text);
+
+    QTextBlockFormat format;
+    format.setLineHeight(QFontMetrics(mFont).height()*1.1,QTextBlockFormat::FixedHeight);
+    format.setAlignment(Qt::AlignRight);
+    QTextCursor cursor = ui->textBrowser->textCursor();
+    cursor.select(QTextCursor::Document);
+    cursor.mergeBlockFormat(format);
 }
 
 void MyTextEditor::textEditVScrollBarChanged()

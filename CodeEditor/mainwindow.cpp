@@ -1,21 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <QFontDialog>
 #include <QSettings>
-
-
+#include <MyCodeEditor.h>
+#include <QPrinter>
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
 #if QT_CONFIG(printer)
 #if QT_CONFIG(printdialog)
 #include <QPrintDialog>
+#include <QTextStream>
 #endif
-#include <MyTextEditByCode.h>
-#include <MyTextEditor.h>
-#include <QPrinter>
 #endif
 #endif
 
@@ -72,7 +69,8 @@ void MainWindow::on_new_file_triggered()
 {
 //    MyTextEditor * mytexteditor = new MyTextEditor(this);
 //    ui->tabWidget->addTab(mytexteditor,"New tab");
-    ui->tabWidget->addTab(new MyTextEditByCode(this),"New tab");
+//    ui->tabWidget->addTab(new MyTextEditByCode(this),"New tab");
+    ui->tabWidget->addTab(new MyCodeEditor(this),"New tab");
 //    qDebug()<<"Start Create New File ...";
 //    currentFile.clear();
 //    ui->textEdit->setText("");
@@ -80,26 +78,20 @@ void MainWindow::on_new_file_triggered()
 
 void MainWindow::on_save_file_triggered()
 {
-    QString fileName;
-    if(currentFile.isEmpty())
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
     {
-        fileName = QFileDialog::getSaveFileName(this,"保存文件");
-        currentFile = fileName;
+        if(codeEditor->saveFile())
+        {
+            QString filename = codeEditor->getFileName();
+            ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+        }
+        else
+        {
+            QMessageBox::warning(this,"warning","failed to save the file");
+        }
+
     }
-    else
-    {
-        fileName = currentFile;
-    }
-    QFile file(fileName);
-    if(!file.open(QIODevice::WriteOnly|QFile::Text))
-    {
-        QMessageBox::warning(this,"warning","failed to save the file"+file.errorString());
-    }
-    setWindowTitle(fileName);
-    QTextStream out(&file);
-    QString text =ui->textEdit->toHtml();
-    out<<text;
-    file.close();
 }
 
 void MainWindow::on_open_file_triggered()
@@ -115,40 +107,58 @@ void MainWindow::on_open_file_triggered()
     setWindowTitle(fileName);
     QTextStream in(&file);
     QString text = in.readAll();
-    ui->textEdit->setText(text);
+    MyCodeEditor * codeEditor = new MyCodeEditor(this);
+    codeEditor->setPlainText(text);
+    ui->tabWidget->addTab(codeEditor,currentFile);
+
+    ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
     file.close();
-    saveHistory(currentFile);
 }
 
 void MainWindow::on_save_as_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,"另存为");
-    QFile file(fileName);
-    if(!file.open(QIODevice::WriteOnly|QFile::Text))
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
     {
-        QMessageBox::warning(this,"warning","failed to save the file"+file.errorString());
-        return;
+        if(codeEditor->saveAsFile())
+        {
+            QString filename = codeEditor->getFileName();
+            ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+        }
+        else
+        {
+            QMessageBox::warning(this,"warning","failed to save the file");
+        }
+
     }
-    setWindowTitle(fileName);
-    QTextStream out(&file);
-    QString text =ui->textEdit->toHtml();
-    out<<text;
-    file.close();
+
 }
 
 void MainWindow::on_paste_triggered()
 {
-    ui->textEdit->paste();
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->paste();
+    }
 }
 
 void MainWindow::on_copy_triggered()
 {
-    ui->textEdit->copy();
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->copy();
+    }
 }
 
 void MainWindow::on_cut_triggered()
 {
-    ui->textEdit->cut();
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->cut();
+    }
 }
 
 void MainWindow::on_about_triggered()
@@ -162,33 +172,27 @@ void MainWindow::on_font_triggered()
     QFont font = QFontDialog::getFont(&fontSleceted,this);
     if(fontSleceted)
     {
-        ui->textEdit->setFont(font);
+//        ui->textEdit->setFont(font);
     }
 }
 
 void MainWindow::on_undo_triggered()
 {
-    ui->textEdit->undo();
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->undo();
+    }
 }
-//加粗
-void MainWindow::on_bolder_triggered(bool checked)
-{
-    ui->textEdit->setFontWeight(checked?QFont::Bold:QFont::Normal);
-}
-//斜体
-void MainWindow::on_italics_triggered(bool checked)
-{
-    ui->textEdit->setFontItalic(checked);
-}
-//下划线
-void MainWindow::on_underline_triggered(bool checked)
-{
-    ui->textEdit->setFontUnderline(checked);
-}
+
 
 void MainWindow::on_redo_triggered()
 {
-    ui->textEdit->redo();
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->redo();
+    }
 }
 
 void MainWindow::on_exit_triggered()
@@ -213,7 +217,18 @@ void MainWindow::on_print_triggered()
     if(dialog.exec()==QDialog::Rejected)
         return;
 #endif
-    ui->textEdit->print(&printDev);
+    MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+    if(codeEditor)
+    {
+        codeEditor->print(&printDev);
+    }
 #endif
+}
+
+
+void MainWindow::on_tabWidget_tabCloseRequested(int index)
+{
+    delete ui->tabWidget->currentWidget();
+    ui->tabWidget->removeTab(index);
 }
 

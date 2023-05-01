@@ -10,11 +10,14 @@ class MyTextEditByCode : public QWidget
     Q_OBJECT
 public:
     explicit MyTextEditByCode(QWidget *parent = nullptr);
+
+    ~MyTextEditByCode();
 private slots:
     void onTextEditHorizontalScrollBarChanged();
     void onTextEditVerticalScrollBarChanged();
     void onScrollBarChanged();
     void onTextBrowserHorizontalScrollBarChanged();
+    void highlightCurrentLine();
     //行号
     void onTextChanged();
 private:
@@ -26,6 +29,7 @@ private:
     void initFont();
     void initConnection();
     void initHighlight();
+
 signals:
 
 };
