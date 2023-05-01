@@ -10,13 +10,17 @@ MyHighLighter::MyHighLighter(QTextDocument *parent):QSyntaxHighlighter(parent)
 
     //对于字符串
     addStringFormat();
-}
 
+    //注释高亮
+    addCommentFormat();
+}
+//按行传入
 void MyHighLighter::highlightBlock(const QString &text)
 {
+    QRegExp regExp;
     foreach (const HighlightRule &rule, highlightRules)
     {
-        QRegExp regExp(rule.pattern);
+        regExp = rule.pattern;
         int index = regExp.indexIn(text);
         while (index>=0)
         {
@@ -24,6 +28,40 @@ void MyHighLighter::highlightBlock(const QString &text)
             setFormat(index,length,rule.format);
             index = regExp.indexIn(text,index+length);
         }
+    }
+    setCurrentBlockState(0);
+
+    // /*
+    QRegExp commentStartRegExp("/\\*");
+
+    // */
+    QRegExp commentEndRegExp("\\*/");
+    //高亮
+    QTextCharFormat multiLineCommentFormat;
+    multiLineCommentFormat.setFont(QFont(mFontFamily,mFontSize));
+    multiLineCommentFormat.setForeground(Qt::darkGreen);
+    int startIndex = 0 ;
+    if(previousBlockState()!=1)
+    {
+        startIndex = commentStartRegExp.indexIn(text);
+    }
+    while (startIndex>=0)
+    {
+        int commentLength = 0;
+        int endIndex = commentEndRegExp.indexIn(text,startIndex);
+        if(endIndex==-1)//没有结束
+        {
+            setCurrentBlockState(1);
+            commentLength = text.length()-startIndex;
+        }
+        else//结束位置
+        {
+            commentLength = endIndex-startIndex+commentEndRegExp.matchedLength();
+            setFormat(startIndex,commentLength,multiLineCommentFormat);
+        }
+        setFormat(startIndex,commentLength,multiLineCommentFormat);
+
+        startIndex = commentStartRegExp.indexIn(text,commentLength+startIndex);
     }
 }
 
@@ -68,4 +106,21 @@ void MyHighLighter::addStringFormat()
 
     rule.pattern = QRegExp("`[^`]*`");
     highlightRules.append(rule);
+}
+
+void MyHighLighter::addCommentFormat()
+{
+    QTextCharFormat commentFormat;
+    commentFormat.setFont(QFont(mFontFamily,mFontSize));
+    commentFormat.setForeground(Qt::darkGreen);
+    HighlightRule rule;
+
+    rule.format = commentFormat;
+    //匹配单行注释
+    rule.pattern = QRegExp("\\/\\/.*$");
+    highlightRules.append(rule);
+    //匹配多行
+    rule.pattern = QRegExp("\\/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*\\/");
+    highlightRules.append(rule);
+
 }

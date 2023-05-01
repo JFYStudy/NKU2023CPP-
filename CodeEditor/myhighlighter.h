@@ -22,6 +22,7 @@ private:
     void addNormalTextFormat();
     void addNumberFormat();
     void addStringFormat();
+    void addCommentFormat();
 };
 
 #endif // MYHIGHLIGHTER_H
