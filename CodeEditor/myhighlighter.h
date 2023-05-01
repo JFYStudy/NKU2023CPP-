@@ -6,12 +6,12 @@
 class MyHighLighter:public QSyntaxHighlighter
 {
 public:
-    explicit MyHighLighter(QTextDocument *parent=nullptr);
+    explicit MyHighLighter(QTextDocument *parent=nullptr,QString fontFamily="Consolas",int fontsize=14);
 protected:
     void highlightBlock(const QString &text);
 private:
-    QString mFontFamily = "Consolas";
-    int mFontSize = 14;
+    QString mFontFamily;
+    int mFontSize;
     struct HighlightRule
     {
         QRegExp pattern;
@@ -23,6 +23,10 @@ private:
     void addNumberFormat();
     void addStringFormat();
     void addCommentFormat();
+    void addMultiLineCommentFormat(const QString &text);
+    void addKeywordsFormat();
+    void addClassNameFormat();
+    void addFunctionFormat();
 };
 
 #endif // MYHIGHLIGHTER_H
