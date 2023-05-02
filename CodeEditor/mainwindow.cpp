@@ -3,8 +3,6 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <QFontDialog>
-#include <QSettings>
-#include <MyCodeEditor.h>
 #include <QPrinter>
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -16,7 +14,7 @@
 #endif
 #endif
 
-QSettings * mSettings;
+
 QList<QString> getHistory();
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,56 +22,48 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setCentralWidget(ui->tabWidget);
-    if(mSettings==NULL)
-    {
-        mSettings = new QSettings("setting.ini",QSettings::IniFormat);
 
-    }
-    getHistory();
+    mSettings = new QSettings("setting.ini",QSettings::IniFormat);
+
+    initFont();
+
+    initAction();
+
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-//保存并且打开历史记录
-void saveHistory(QString path)
-{
-    //获取数组的长度
-    int size = mSettings->beginReadArray("history");
-    mSettings->endArray();//
-    //打开写入
-    mSettings->beginWriteArray("history");
-    mSettings->setArrayIndex(size+1);
-    //保存
-    mSettings->setValue("path",path);
-    //关闭
-    mSettings->endArray();
-}
-//获取历史记录
-QList<QString> getHistory()
-{
-    int size = mSettings->beginReadArray("history");
-    QList<QString> lists;
-    for (int i = 0; i < size; i++)
-    {
-        mSettings->setArrayIndex(i);
-        QString path = mSettings->value("path").toString();
-        lists.append(path);
-    }
 
-    mSettings->endArray();
-    return lists;
+
+void MainWindow::initFont()
+{
+    mFontFamily = mSettings->value("font_family","Consolas").toString();
+    mFontSize = mSettings->value("font_size",14).toInt();
 }
+
+void MainWindow::initAction()
+{
+    bool valid = ui->tabWidget->count()!=0;
+    ui->save_file->setEnabled(valid);
+    ui->save_as->setEnabled(valid);
+    ui->copy->setEnabled(valid);
+    ui->paste->setEnabled(valid);
+    ui->cut->setEnabled(valid);
+    ui->print->setEnabled(valid);
+}
+
+
+//保存并且打开历史记录
+
+//获取历史记录
+
 void MainWindow::on_new_file_triggered()
 {
-//    MyTextEditor * mytexteditor = new MyTextEditor(this);
-//    ui->tabWidget->addTab(mytexteditor,"New tab");
-//    ui->tabWidget->addTab(new MyTextEditByCode(this),"New tab");
-    ui->tabWidget->addTab(new MyCodeEditor(this),"New tab");
-//    qDebug()<<"Start Create New File ...";
-//    currentFile.clear();
-//    ui->textEdit->setText("");
+    ui->tabWidget->addTab(new MyCodeEditor(this,QFont(mFontFamily,mFontSize)),"New tab");
+    initAction();
 }
 
 void MainWindow::on_save_file_triggered()
@@ -83,8 +73,7 @@ void MainWindow::on_save_file_triggered()
     {
         if(codeEditor->saveFile())
         {
-            QString filename = codeEditor->getFileName();
-            ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+           saveSuccessAction(codeEditor);
         }
         else
         {
@@ -96,21 +85,28 @@ void MainWindow::on_save_file_triggered()
 
 void MainWindow::on_open_file_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,"open file");
+    createTab(QFileDialog::getOpenFileName(this,"open file"));
+}
+
+//创建tab
+void MainWindow::createTab(QString fileName)
+{
     QFile file(fileName);
 
     if (!file.open(QIODevice::ReadOnly|QFile::Text)){
         QMessageBox::warning(this,"warning","failed to open the file"+file.errorString());
         return;
     }
-    currentFile = fileName;
-    setWindowTitle(fileName);
     QTextStream in(&file);
     QString text = in.readAll();
-    MyCodeEditor * codeEditor = new MyCodeEditor(this);
+    //创建对象
+    MyCodeEditor * codeEditor = new MyCodeEditor(this,QFont(mFontFamily,mFontSize));
     codeEditor->setPlainText(text);
-    ui->tabWidget->addTab(codeEditor,currentFile);
-
+    //设置文件名
+    codeEditor->setFileName(fileName);
+    //添加tab
+    ui->tabWidget->addTab(codeEditor,fileName);
+    initAction();
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
     file.close();
 }
@@ -122,8 +118,7 @@ void MainWindow::on_save_as_triggered()
     {
         if(codeEditor->saveAsFile())
         {
-            QString filename = codeEditor->getFileName();
-            ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+            saveSuccessAction(codeEditor);
         }
         else
         {
@@ -168,11 +163,18 @@ void MainWindow::on_about_triggered()
 //字体
 void MainWindow::on_font_triggered()
 {
+
     bool fontSleceted;
-    QFont font = QFontDialog::getFont(&fontSleceted,this);
+    QFont font = QFontDialog::getFont(&fontSleceted,QFont(mFontFamily,mFontSize),this);
     if(fontSleceted)
     {
-//        ui->textEdit->setFont(font);
+        MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+        if(codeEditor)
+        {
+            codeEditor->setAllFont(font);
+        }
+        mSettings->setValue("font_family",font.family());
+        mSettings->setValue("font_size",font.pointSize());
     }
 }
 
@@ -201,13 +203,6 @@ void MainWindow::on_exit_triggered()
 }
 
 
-
-void MainWindow::on_clear_history_triggered()
-{
-
-}
-
-
 void MainWindow::on_print_triggered()
 {
 #if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
@@ -228,7 +223,25 @@ void MainWindow::on_print_triggered()
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
-    delete ui->tabWidget->currentWidget();
+    MyCodeEditor * codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
+
+    if(!codeEditor->checkSaved())
+    {
+        QMessageBox::StandardButton btn = QMessageBox::question(this,"warning","Not Saved yet! Save(Y) or Quit(N)?",QMessageBox::Yes|QMessageBox::No);
+        if(btn == QMessageBox::Yes)
+        {
+            if(codeEditor->saveFile())
+            {
+                saveSuccessAction(codeEditor);
+            }
+        }
+    }
+    delete codeEditor;
     ui->tabWidget->removeTab(index);
 }
 
+void MainWindow::saveSuccessAction(MyCodeEditor * codeEditor)
+{
+    QString filename = codeEditor->getFileName();
+    ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+}

@@ -28,6 +28,12 @@ MyHighLighter::MyHighLighter(QTextDocument *parent, QString fontFamily, int font
     addFunctionFormat();
 }
 
+void MyHighLighter::setFont(QFont font)
+{
+    mFontFamily = font.family();
+    mFontSize = font.pointSize();
+}
+
 
 //按行传入
 void MyHighLighter::highlightBlock(const QString &text)

@@ -1,26 +1,27 @@
 #include "mycodeeditor.h"
-
+#include <QDebug>
 #include <MyHighLighter.h>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPainter>
 #include <QScrollBar>
 #include <QTextStream>
-MyCodeEditor::MyCodeEditor(QWidget *parent)
+MyCodeEditor::MyCodeEditor(QWidget *parent,QFont font)
     : QPlainTextEdit{parent}
 {
     lineNumberWidget = new LineNumberWidget(this);
-    //初始化字体
-    initFont();
+
+    //高亮
+    initHighLight();
 
     //初始化连接
     initConnect();
 
+    //初始化字体
+    setAllFont(font);
+
     //行高亮
     highlightCurrentLine();\
-
-    //高亮
-    initHighLight();
 
     //设置边距
     updateLineNumberWidgetWidth();
@@ -30,18 +31,21 @@ MyCodeEditor::MyCodeEditor(QWidget *parent)
 
 MyCodeEditor::~MyCodeEditor()
 {
-    if(lineNumberWidget)
-    {
         delete lineNumberWidget;
-        lineNumberWidget = nullptr;
-    }
 }
 
-
-void MyCodeEditor::initFont()
+void MyCodeEditor::setAllFont(QFont font)
 {
-    this->setFont(QFont("Consolas",14));
+    this->setFont(font);
+    highlighter->setFont(font);
+    updateLineNumberWidgetWidth();
 }
+
+bool MyCodeEditor::checkSaved()
+{
+    return isSaved;
+}
+
 
 void MyCodeEditor::initConnect()
 {
@@ -51,11 +55,13 @@ void MyCodeEditor::initConnect()
     connect(this,SIGNAL(blockCountChanged(int)),this,SLOT(updateLineNumberWidgetWidth()));
     //绑定行号绘制
     connect(this,SIGNAL(updateRequest(QRect,int)),this,SLOT(updateLineNumberWidget(QRect,int)));
+    //文字更新
+    connect(this,SIGNAL(textChanged()),this,SLOT(updateSaveState()));
 }
 
 void MyCodeEditor::initHighLight()
 {
-    new MyHighLighter(document());
+    highlighter =  new MyHighLighter(document());
 }
 
 int MyCodeEditor::getLineNumberWidgetWidth()
@@ -88,6 +94,12 @@ void MyCodeEditor::updateLineNumberWidget(QRect rect, int dy)
 void MyCodeEditor::updateLineNumberWidgetWidth()
 {
     setViewportMargins(getLineNumberWidgetWidth(),0,0,0);
+}
+
+void MyCodeEditor::updateSaveState()
+{
+    //更新保存状态
+    isSaved = false;
 }
 
 void MyCodeEditor::resizeEvent(QResizeEvent *event)
@@ -146,6 +158,8 @@ void MyCodeEditor::LineNumberWidgetWheelEvent(QWheelEvent *event)
     event->accept();
 }
 
+
+
 bool MyCodeEditor::saveFile()
 {
     QString fileName;
@@ -169,6 +183,7 @@ bool MyCodeEditor::saveFile()
 
     out<<toPlainText();
     file.close();
+    isSaved = true;
     return 1;
 }
 
@@ -187,6 +202,7 @@ bool MyCodeEditor::saveAsFile()
     QString text =toPlainText();
     out<<text;
     file.close();
+    isSaved = true;
     return true;
 }
 
@@ -199,4 +215,6 @@ QString MyCodeEditor::getFileName()
 {
     return mFilename;
 }
+
+
 
