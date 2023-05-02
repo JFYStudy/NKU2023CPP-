@@ -36,3 +36,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     Code.qrc \
     images.qrc
+
+RC_ICONS = images/Codeeditor.ico

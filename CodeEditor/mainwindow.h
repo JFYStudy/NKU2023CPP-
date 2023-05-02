@@ -18,7 +18,8 @@ public:
     ~MainWindow();
 
     void saveSuccessAction(MyCodeEditor * codeEditor);
-
+protected:
+    void closeEvent(QCloseEvent *event);
 private slots:
     void on_new_file_triggered();
 

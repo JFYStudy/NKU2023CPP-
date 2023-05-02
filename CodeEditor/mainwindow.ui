@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Demo-CodeEditor</string>
+   <string>VsCold</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">

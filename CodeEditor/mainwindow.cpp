@@ -15,7 +15,7 @@
 #endif
 
 
-QList<QString> getHistory();
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -53,6 +53,8 @@ void MainWindow::initAction()
     ui->paste->setEnabled(valid);
     ui->cut->setEnabled(valid);
     ui->print->setEnabled(valid);
+    ui->undo->setEnabled(valid);
+    ui->redo->setEnabled(valid);
 }
 
 
@@ -73,7 +75,7 @@ void MainWindow::on_save_file_triggered()
     {
         if(codeEditor->saveFile())
         {
-           saveSuccessAction(codeEditor);
+            saveSuccessAction(codeEditor);
         }
         else
         {
@@ -205,19 +207,19 @@ void MainWindow::on_exit_triggered()
 
 void MainWindow::on_print_triggered()
 {
-#if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
-    QPrinter printDev;
-#if QT_CONFIG(printdialog)
-    QPrintDialog dialog(&printDev,this);
-    if(dialog.exec()==QDialog::Rejected)
-        return;
-#endif
     MyCodeEditor *codeEditor = (MyCodeEditor *)ui->tabWidget->currentWidget();
     if(codeEditor)
     {
-        codeEditor->print(&printDev);
-    }
+#if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
+        QPrinter printDev;
+#if QT_CONFIG(printdialog)
+        QPrintDialog dialog(&printDev,this);
+        if(dialog.exec()==QDialog::Rejected)
+            return;
 #endif
+        codeEditor->print(&printDev);
+#endif
+    }
 }
 
 
@@ -227,21 +229,44 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 
     if(!codeEditor->checkSaved())
     {
-        QMessageBox::StandardButton btn = QMessageBox::question(this,"warning","Not Saved yet! Save(Y) or Quit(N)?",QMessageBox::Yes|QMessageBox::No);
+        QMessageBox::StandardButton btn = QMessageBox::question(this,"warning","Not Saved yet! Save(Y) or Quit(N)?",QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+
         if(btn == QMessageBox::Yes)
         {
             if(codeEditor->saveFile())
             {
                 saveSuccessAction(codeEditor);
             }
+            return;
+        }
+        else if(btn == QMessageBox::Cancel)
+        {
+            return;
         }
     }
     delete codeEditor;
-    ui->tabWidget->removeTab(index);
+    initAction();
 }
 
 void MainWindow::saveSuccessAction(MyCodeEditor * codeEditor)
 {
     QString filename = codeEditor->getFileName();
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),filename);
+
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(ui->tabWidget->count()>0)
+    {
+        QMessageBox::StandardButton btn = QMessageBox::question(this,"警告","有未保存的文件,确定要关闭吗？",QMessageBox::Yes|QMessageBox::No);
+        if(btn == QMessageBox::Yes)
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
 }
