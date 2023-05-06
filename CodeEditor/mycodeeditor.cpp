@@ -11,11 +11,11 @@ MyCodeEditor::MyCodeEditor(QWidget *parent,QFont font)
 {
     lineNumberWidget = new LineNumberWidget(this);
 
-    //高亮
-    initHighLight();
-
     //初始化连接
     initConnect();
+
+    //高亮
+    initHighLight();
 
     //初始化字体
     setAllFont(font);
@@ -119,7 +119,6 @@ void MyCodeEditor::LineNumberWidgetPaintEvent(QPaintEvent *event)
     int blockNumber = block.blockNumber();
     //拿到当前的block的top
     int cursorTop = blockBoundingGeometry(textCursor().block()).translated(contentOffset()).top();
-
     //拿到block的top
     int top = blockBoundingGeometry(block).translated(contentOffset()).top();
     //拿到block的bottom

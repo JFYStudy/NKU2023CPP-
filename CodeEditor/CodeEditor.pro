@@ -13,20 +13,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mycodeeditor.cpp \
-    myhighlighter.cpp \
-    mytexteditbycode.cpp \
-    mytexteditor.cpp
+    myhighlighter.cpp
 
 HEADERS += \
     mainwindow.h \
     mycodeeditor.h \
-    myhighlighter.h \
-    mytexteditbycode.h \
-    mytexteditor.h
+    myhighlighter.h
 
 FORMS += \
-    mainwindow.ui \
-    mytexteditor.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

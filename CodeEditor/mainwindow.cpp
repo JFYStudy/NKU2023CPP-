@@ -98,7 +98,7 @@ void MainWindow::createTab(QString fileName)
     if (!file.open(QIODevice::ReadOnly|QFile::Text)){
         QMessageBox::warning(this,"warning","failed to open the file"+file.errorString());
         return;
-    }
+    }//检查是否为只读文件
     QTextStream in(&file);
     QString text = in.readAll();
     //创建对象
