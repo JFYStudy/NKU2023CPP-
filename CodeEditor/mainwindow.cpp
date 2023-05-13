@@ -160,7 +160,7 @@ void MainWindow::on_cut_triggered()
 
 void MainWindow::on_about_triggered()
 {
-    QMessageBox::about(this,"Welcome to MKeditor","This is a markdown editor based on qt, welcome!");
+    QMessageBox::about(this,"Welcome to VsCold","This is a text editor based on qt, welcome!");
 }
 //字体
 void MainWindow::on_font_triggered()

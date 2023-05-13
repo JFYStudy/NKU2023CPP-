@@ -60,7 +60,6 @@ void MyHighLighter::addNormalTextFormat()
     QTextCharFormat normalTextFormat;
     normalTextFormat.setFont(QFont(mFontFamily,mFontSize));
     normalTextFormat.setForeground(QColor(0,0,0));
-
     rule.format = normalTextFormat;
     highlightRules.append(rule);
 }

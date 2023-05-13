@@ -26,12 +26,13 @@ MyCodeEditor::MyCodeEditor(QWidget *parent,QFont font)
     //设置边距
     updateLineNumberWidgetWidth();
 
+    //设置自动换行
     setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 MyCodeEditor::~MyCodeEditor()
 {
-        delete lineNumberWidget;
+    delete lineNumberWidget;
 }
 
 void MyCodeEditor::setAllFont(QFont font)

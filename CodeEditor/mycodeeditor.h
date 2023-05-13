@@ -27,7 +27,7 @@ private:
     int getLineNumberWidgetWidth();
     LineNumberWidget * lineNumberWidget;
     MyHighLighter * highlighter ;
-    QString mFilename; 
+    QString mFilename;
     bool isSaved = false;
 private slots:
     void highlightCurrentLine();
