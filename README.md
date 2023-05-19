@@ -12,7 +12,7 @@ Qt 5.15.2 MInGW
 
 # 窗口示意图
 
-## ![窗口示意](figures\窗口示意.png)
+## ![窗口示意](figures/窗口示意.png)
 
 # 主要流程
 
@@ -173,8 +173,8 @@ private:
 
 > 创建新文件
 
-![image-20230520010337601](figures\创建新文件.png)
+![image-20230520010337601](figures/创建新文件.png)
 
 > 代码高亮
 
-![image-20230520010622480](F:\Desktop\C++BIGHOMEWORK\NKU2023CPP-\figures\代码高亮)
+![image-20230520010622480](figures/代码高亮)
