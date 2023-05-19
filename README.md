@@ -1,7 +1,29 @@
 # 南开大学23C++大作业 VsCold 文本编辑器
-> 本项目继承于 https://github.com/libaroma/course-qt-widget-notepad-demo
-## mainwindow.cpp
+> 此项目继承于 https://github.com/libaroma/course-qt-widget-notepad-demo
+# 作业题目
+
+VsCold文本编辑器
+
+# 开发软件
+
+Qt Creator 9.0.2社区版
+
+Qt 5.15.2 MInGW
+
+# 窗口示意图
+
+## ![窗口示意](figures\窗口示意.png)
+
+# 主要流程
+
+
+
+## MainWindow.cpp
+
 ### 基本操作
+
+> MainWindow窗口中的菜单栏
+
 ```cpp
 //创建新文件
 void on_new_file_triggered();
@@ -51,11 +73,13 @@ void createTab(QString fileName);
 ## mycodeeditor.cpp
 > 主要的代码编辑区
 > 有两个类，一个是mycodeeditor一个是Linenumberwidget用来绘制行号
+### MyCodeEditor
+
 ```cpp
 public:
     explicit MyCodeEditor(QWidget *parent = nullptr,QFont font = QFont("Consolas",14));
     ~MyCodeEditor();
-    void LineNumberWidgetPaintEvent(QPaintEvent * event);
+    void LineNumberWidgetPaintEvent(QPaintEvent * event);//绘画事件
     void LineNumberWidgetMousePressEvent(QMouseEvent *event);
     void LineNumberWidgetWheelEvent(QWheelEvent *event);
     bool saveFile();
@@ -68,17 +92,53 @@ private:
     void initConnect();
     void initHighLight();
     int getLineNumberWidgetWidth();
-    LineNumberWidget * lineNumberWidget;
-    MyHighLighter * highlighter ;
-    QString mFilename;
-    bool isSaved = false;
+    LineNumberWidget * lineNumberWidget;//行号统计功能
+    MyHighLighter * highlighter ;//高亮功能
+    QString mFilename;//当前打开的文件的文件名，最终会显示在TabWidget上
+    bool isSaved = false;//用于追踪当前文件是否已经保存
 private slots:
     void highlightCurrentLine();
     void updateLineNumberWidget(QRect rect,int dy);
     void updateLineNumberWidgetWidth();
     void updateSaveState();
 ```
-## myhighter.cpp
+### LineNumberWidget
+
+```cpp
+public:
+    explicit LineNumberWidget(MyCodeEditor *editor = nullptr):QWidget(editor)
+    {
+        codeEditor = editor;
+    };
+protected:
+    void paintEvent(QPaintEvent *event) override
+    {
+        codeEditor->LineNumberWidgetPaintEvent(event);
+    }
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        codeEditor->LineNumberWidgetMousePressEvent(event);
+    }
+    void wheelEvent(QWheelEvent *event) override
+    {
+        codeEditor->LineNumberWidgetWheelEvent(event);
+    }
+private:
+    MyCodeEditor *codeEditor;
+```
+
+
+
+## myhighter
+
+### 解释
+
+通过创建MyHighter类，每当编辑器有更新，则将整个页面符合要求的高亮
+
+其中使用一个**QVector**将每一种高亮保存起来
+
+字符的匹配，使用了**正则表达式**
+
 > 代码高亮功能
 ```cpp
 public:
@@ -108,3 +168,13 @@ private:
 ## 如何运行此项目
 > 要求Windows
 > 本项目在Qt 5.15.2 MinGW编译器环境下运行
+
+# 测试
+
+> 创建新文件
+
+![image-20230520010337601](figures\创建新文件.png)
+
+> 代码高亮
+
+![image-20230520010622480](F:\Desktop\C++BIGHOMEWORK\NKU2023CPP-\figures\代码高亮)
